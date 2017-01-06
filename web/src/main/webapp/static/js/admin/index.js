@@ -1,13 +1,3 @@
-$(".page-sidebar-menu").find("a").on("click", function(e) {
-    $(this).parent().siblings(".active").find(".sub-menu").collapse('hide');
-    $(this).parent().addClass("active");
-    $(this).siblings().filter(".sub-menu").collapse('toggle');
-})
-
-$(".page-sidebar-menu").find(".collapse").on("hidden.bs.collapse", function(e) {
-    $(this).parent().removeClass("active");
-})
-
 
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('main'));

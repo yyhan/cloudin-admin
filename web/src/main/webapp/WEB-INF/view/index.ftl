@@ -8,20 +8,19 @@
 <#-- 定义pageHeader变量 -->
     <#assign pageHeader in layout>
     <header class="page-header">
-        <h1>Example page header
-            <small>Subtext for header</small>
-        </h1>
+        <h1>Welcome</h1>
     </header>
     </#assign>
 
 <#-- 定义pageBody变量 -->
-    <#assign pageBody in layout>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div id="main" style="width: 600px;height:400px;"></div>
-        </div>
-    </div>
-    </#assign>
+    <#--<#assign pageBody in layout>-->
+        <#--<div class="panel panel-default">-->
+            <#--<div class="panel-body">-->
+                <#--<div id="main" style="width: 600px;height:400px;"></div>-->
+            <#--</div>-->
+        <#--</div>-->
+
+    <#--</#assign>-->
 
 <#-- 定义pageScript变量 -->
     <#assign pageScript in layout>

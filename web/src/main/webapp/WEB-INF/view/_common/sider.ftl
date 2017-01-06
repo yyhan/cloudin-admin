@@ -21,10 +21,12 @@
             </ul>
         </li>
         <li>
-            <a href="#"><i class="fa fa-shopping-cart"></i> 订单管理</a>
+            <a href="#"><i class="fa fa-shopping-cart"></i> 图表数据</a>
             <ul class="sub-menu collapse" id="collapse2">
-                <li><a href="#">eeee</a></li>
-                <li><a href="#">rrr</a></li>
+                <li><a href="${webRoot}/echarts/map">地图</a></li>
+                <li><a href="${webRoot}/echarts/line">折线图</a></li>
+                <li><a href="${webRoot}/echarts/bar">柱状图</a></li>
+                <li><a href="${webRoot}/echarts/pie">饼图</a></li>
             </ul>
         </li>
         <li>

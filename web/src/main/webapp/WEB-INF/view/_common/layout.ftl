@@ -27,7 +27,7 @@
     <#include "header.ftl" parse=false encoding="UTF-8" >
 <div class="container-fluid">
     <div class="page-sidebar-wrapper">
-        <#include "sider.ftl"  parse=false encoding="UTF-8">
+        <#include "sider.ftl"  parse=true encoding="UTF-8">
     </div>
     <div class="page-content-wrapper">
         <div class="page-content">
@@ -47,7 +47,19 @@
 </div>
 <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="//cdn.bootcss.com/echarts/3.3.2/echarts.min.js"></script>
+<script type="text/javascript">
+    var webRoot = "${webRoot}";
+    var webStaticRoot = "${staticRoot}";
+    $(".page-sidebar-menu").find("a").on("click", function(e) {
+        $(this).parent().siblings(".active").find(".sub-menu").collapse('hide');
+        $(this).parent().addClass("active");
+        $(this).siblings().filter(".sub-menu").collapse('toggle');
+    });
+
+    $(".page-sidebar-menu").find(".collapse").on("hidden.bs.collapse", function(e) {
+        $(this).parent().removeClass("active");
+    });
+</script>
     <#if pageScript??>
     ${pageScript}
     </#if>
