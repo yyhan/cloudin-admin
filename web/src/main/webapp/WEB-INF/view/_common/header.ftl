@@ -10,7 +10,7 @@
                 <li><a href="#contact">人员管理</a></li>
             </ul>
             <ul class="nav navbar-nav pull-right">
-                <li><a href="#">管理员</a></li>
+                <li><a href="#">${Session.SPRING_SECURITY_CONTEXT.authentication.principal}</a></li>
                 <li><a href="#">退出</a></li>
             </ul>
         </div>

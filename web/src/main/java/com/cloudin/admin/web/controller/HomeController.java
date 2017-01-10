@@ -18,27 +18,14 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping(path = {"/jsp"})
-    public String jsp(Model model){
-        model.addAttribute("user", "jone");
-        return "/WEB-INF/jsp/index.jsp";
-    }
-    @RequestMapping(path = {"/freemarker"})
-    public String freemarker(Model model){
-        model.addAttribute("user", "jone");
-//        return "/WEB-INF/freemarker/welcome.ftl";
-        return "welcome";
-    }
-    @RequestMapping(path = {"/tiles"})
-    public String tiles(Model model){
-        model.addAttribute("user", "jone");
-        return "/WEB-INF/tiles/index.tile";
+    @RequestMapping(path = {"/signin"})
+    public String signin(){
+        return "signin";
     }
 
-    @RequestMapping(path = {"/json"})
-    @ResponseBody
-    public BaseResponse json(){
-        BaseResponse result = new BaseResponse();
-        return  result;
+    @RequestMapping(path = {"/signout"})
+    public String signout(){
+        return "signout";
     }
+
 }

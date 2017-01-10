@@ -24,7 +24,7 @@
     </#if>
 </head>
 <body>
-    <#include "header.ftl" parse=false encoding="UTF-8" >
+    <#include "header.ftl" parse=true encoding="UTF-8" >
 <div class="container-fluid">
     <div class="page-sidebar-wrapper">
         <#include "sider.ftl"  parse=true encoding="UTF-8">
