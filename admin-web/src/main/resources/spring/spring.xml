@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+    
+    <import resource="spring-properties.xml" />
+    <import resource="spring-datasource.xml" />
+    <import resource="spring-mybatis.xml" />
+    
+    <!-- 指定扫描路径 -->
+    <context:component-scan base-package="com.cloudin.admin">
+        <context:exclude-filter type="regex" expression="com.cloudin.admin.web" />
+    </context:component-scan>
+    
+    <!-- 配置 aspectj 注解  -->
+    <aop:aspectj-autoproxy />
+    
+    
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="loginUrl" value="/signin.htm" />
+        <property name="successUrl" value="/index.htm" />
+        <property name="unauthorizedUrl" value="/403.htm" />
+        <property name="filterChainDefinitionMap">
+            <map>
+                <entry key="/signin.htm" value="anon" />
+                <entry key="/signout.htm" value="anon" />
+                <entry key="/ajax/signin.htm" value="anon" />
+                <entry key="/403.htm" value="anon" />
+                <entry key="/index.htm" value="authc" />
+                <entry key="/administrator/**.htm" value="authc,roles[admin]" />
+                <entry key="/ajax/administrator/**.htm" value="authc,roles[admin]" />
+                <entry key="/**" value="authc" />
+            </map>
+        </property>
+        <property name="securityManager">
+            <bean class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+                <property name="realm">
+                    <bean class="com.cloudin.admin.support.shiro.CloudinShiroRealm" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

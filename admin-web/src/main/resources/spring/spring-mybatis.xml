@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+    <import resource="spring-datasource.xml" />
+    
+    <bean id="adminSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="adminDataSource" />
+        <property name="mapperLocations" value="classpath*:mapper/admin/**.xml" />
+    </bean>
+    <bean id="adminMapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.cloudin.admin.dao" />
+        <property name="sqlSessionFactoryBeanName" value="adminSqlSessionFactory" />
+    </bean>
+    
+</beans>

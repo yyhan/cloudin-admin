@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Properties>
+        <Property name="logCharset">UTF-8</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%traceId] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger - %msg %throwable{full}%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        
+        <!-- 默认日志 -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+        </Root>
+        
+        <logger name="org.springframework" level="info" />
+        <logger name="org.apache.zookeeper" level="info" />
+        <logger name="com.dangdang.ddframe" level="info" />
+        <logger name="com.alibaba.dubbo" level="info" />
+        <logger name="org.I0Itec.zkclient" level="info" />
+        <logger name="org.apache.velocity" level="info" />
+        <logger name="org.apache.commons.digester" level="info" />
+    
+    </Loggers>
+</Configuration>

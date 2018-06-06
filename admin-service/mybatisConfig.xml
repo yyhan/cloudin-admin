@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    
+    <!-- supports 3.0+ 版本 -->
+    <context id="cloudinAdmin" targetRuntime="com.cloudin.commons.langs.support.mybatisgenerator.IntrospectedTableMyBatis3SimpleImpl">
+        <!-- 对关键字使用 "`" 符号包围 -->
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <!-- 指定生成的java文件的编码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+    
+        <!-- 分页类的名称，每个项目的路径可能不一样，各自设置 -->
+        <property name="paginationClassName" value="com.cloudin.commons.langs.entity.PageInfo"/>
+        
+        <!-- 分页插件 -->
+        <plugin type="com.cloudin.commons.langs.support.mybatisgenerator.PaginationPlugin" />
+    
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+    
+        <!-- 自动生成注释的插件 -->
+        <commentGenerator type="com.cloudin.commons.langs.support.mybatisgenerator.CommentGenerator" />
+        
+        <!-- 数据库链接配置 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/cloudin_admin?useSSL=false&amp;serverTimezone=Asia/Shanghai"
+                        userId="root" password="123456" />
+        
+        <!-- 实体文件生成路径 -->
+        <javaModelGenerator targetPackage="com.cloudin.admin.entity" targetProject="./src/main/java" />
+        <!-- mapper.xml文件生成路径，建议放在 /src/main/resources/mapper/<db_name> 目录下-->
+        <sqlMapGenerator targetPackage="mapper/admin" targetProject="./src/main/resources" />
+        <!-- dao接口类文件生成路径 -->
+        <javaClientGenerator targetPackage="com.cloudin.admin.dao" targetProject="./src/main/java" type="XMLMAPPER" />
+        
+        <!-- 以下是各个表的配置文件，根据需要自行配置 -->
+    
+        <table schema="cloudin_admin" tableName="administrator" delimitIdentifiers="true" delimitAllColumns="true"
+               enableDeleteByExample="true"
+               enableDeleteByPrimaryKey="true"
+               enableUpdateByExample="true"
+               enableUpdateByPrimaryKey="true">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="id" isGeneratedAlways="true" />
+            <columnOverride column="freeze" javaType="java.lang.Boolean"/>
+            <columnOverride column="disabled" javaType="java.lang.Boolean"/>
+            <columnOverride column="create_time" isGeneratedAlways="true" />
+            <columnOverride column="update_time" isGeneratedAlways="true" />
+            <columnOverride column="is_valid" javaType="java.lang.Boolean" property="valid" />
+        </table>
+        <table schema="cloudin_admin" tableName="administrator_role" delimitIdentifiers="true" delimitAllColumns="true"
+               enableDeleteByExample="true"
+               enableDeleteByPrimaryKey="true"
+               enableUpdateByExample="true"
+               enableUpdateByPrimaryKey="true">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="id" isGeneratedAlways="true" />
+            <columnOverride column="create_time" isGeneratedAlways="true" />
+            <columnOverride column="update_time" isGeneratedAlways="true" />
+            <columnOverride column="is_valid" javaType="java.lang.Boolean" property="valid" />
+        </table>
+        <table schema="cloudin_admin" tableName="permission" delimitIdentifiers="true" delimitAllColumns="true"
+               enableDeleteByExample="true"
+               enableDeleteByPrimaryKey="true"
+               enableUpdateByExample="true"
+               enableUpdateByPrimaryKey="true">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="id" isGeneratedAlways="true" />
+            <columnOverride column="create_time" isGeneratedAlways="true" />
+            <columnOverride column="update_time" isGeneratedAlways="true" />
+            <columnOverride column="is_valid" javaType="java.lang.Boolean" property="valid" />
+        </table>
+        <table schema="cloudin_admin" tableName="role" delimitIdentifiers="true" delimitAllColumns="true"
+               enableDeleteByExample="true"
+               enableDeleteByPrimaryKey="true"
+               enableUpdateByExample="true"
+               enableUpdateByPrimaryKey="true">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="id" isGeneratedAlways="true" />
+            <columnOverride column="create_time" isGeneratedAlways="true" />
+            <columnOverride column="update_time" isGeneratedAlways="true" />
+            <columnOverride column="is_valid" javaType="java.lang.Boolean" property="valid" />
+        </table>
+        <table schema="cloudin_admin" tableName="role_permission" delimitIdentifiers="true" delimitAllColumns="true"
+               enableDeleteByExample="true"
+               enableDeleteByPrimaryKey="true"
+               enableUpdateByExample="true"
+               enableUpdateByPrimaryKey="true">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="id" isGeneratedAlways="true" />
+            <columnOverride column="create_time" isGeneratedAlways="true" />
+            <columnOverride column="update_time" isGeneratedAlways="true" />
+            <columnOverride column="is_valid" javaType="java.lang.Boolean" property="valid" />
+        </table>
+    </context>
+</generatorConfiguration>

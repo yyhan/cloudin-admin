@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+    <bean id="adminDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.cloudin.admin.driver}" />
+        <property name="url" value="${jdbc.cloudin.admin.url}" />
+        <property name="username" value="${jdbc.cloudin.admin.username}" />
+        <property name="password" value="${jdbc.cloudin.admin.password}" />
+        <!--<property name="maxTotal" value="${jdbc.hollypay.maxTotal}" />-->
+        <!--<property name="initialSize" value="${jdbc.hollypay.initialSize}" />-->
+        <!--<property name="maxWaitMillis" value="${jdbc.hollypay.maxWaitMillis}" />-->
+        <!--<property name="maxIdle" value="${jdbc.hollypay.maxIdle}" />-->
+        <!--<property name="minIdle" value="${jdbc.hollypay.minIdle}" />-->
+    </bean>
+</beans>
