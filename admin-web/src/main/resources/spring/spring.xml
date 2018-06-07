@@ -33,10 +33,19 @@
                 <entry key="/signout.htm" value="anon" />
                 <entry key="/ajax/signin.htm" value="anon" />
                 <entry key="/403.htm" value="anon" />
-                <entry key="/index.htm" value="authc" />
-                <entry key="/administrator/**.htm" value="authc,roles[admin]" />
-                <entry key="/ajax/administrator/**.htm" value="authc,roles[admin]" />
-                <entry key="/**" value="authc" />
+                <!--<entry key="/index.htm" value="authc" />-->
+                <!--<entry key="/administrator/**.htm" value="authc,cloudinAuth" />-->
+                <!--<entry key="/ajax/administrator/**.htm" value="authc,cloudinAuth" />-->
+                <entry key="/**" value="authc,cloudinAuth" />
+            </map>
+        </property>
+        <property name="filters">
+            <map>
+                <entry key="cloudinAuth">
+                    <bean class="com.cloudin.admin.support.shiro.CloudinAccessControlFilter">
+                        <property name="defaultAccessAllowed" value="true" />
+                    </bean>
+                </entry>
             </map>
         </property>
         <property name="securityManager">

@@ -1,9 +1,11 @@
 package com.cloudin.admin.web.controller;
 
 import com.cloudin.admin.entity.Administrator;
+import com.cloudin.admin.entity.Permission;
 import com.cloudin.admin.entity.Role;
 import com.cloudin.admin.service.AdministratorService;
 import com.cloudin.admin.service.RoleService;
+import com.cloudin.commons.langs.entity.BaseResult;
 import com.cloudin.commons.langs.support.datatables.DTRequest;
 import com.cloudin.commons.langs.support.datatables.DTResponse;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,24 @@ public class RoleController {
 	
 	@Resource
 	private RoleService roleService;
+	
+	@ResponseBody
+	@RequestMapping("/ajax/role/add.htm")
+	public BaseResult add(Role role) {
+		return roleService.add(role);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/ajax/role/update.htm")
+	public BaseResult update(Role role) {
+		return roleService.update(role);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/ajax/role/delete.htm")
+	public BaseResult delete(Integer roleId) {
+		return roleService.delete(roleId);
+	}
 	
 	@RequestMapping("/role/list.htm")
 	public String listWithPage() {

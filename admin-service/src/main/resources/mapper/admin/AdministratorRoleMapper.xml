@@ -194,10 +194,4 @@
       `is_valid` = #{valid,jdbcType=TINYINT}
     where `id` = #{id,jdbcType=INTEGER}
   </update>
-    <select id="listRoles" resultType="java.lang.String">
-        SELECT B.`code`
-        FROM administrator_role A
-        LEFT JOIN role B ON A.role_id = B.id
-        WHERE A.administrator_id = #{administratorId}
-    </select>
 </mapper>

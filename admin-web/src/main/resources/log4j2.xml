@@ -14,7 +14,8 @@
         <Root level="info">
             <AppenderRef ref="Console" />
         </Root>
-        
+    
+        <logger name="com.cloudin" level="debug" />
         <logger name="org.springframework" level="info" />
         <logger name="org.apache.zookeeper" level="info" />
         <logger name="com.dangdang.ddframe" level="info" />

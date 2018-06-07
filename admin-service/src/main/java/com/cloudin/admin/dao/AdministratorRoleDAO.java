@@ -2,8 +2,9 @@ package com.cloudin.admin.dao;
 
 import com.cloudin.admin.entity.AdministratorRole;
 import com.cloudin.admin.entity.AdministratorRoleExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author MyBatis Generator
@@ -121,6 +122,4 @@ public interface AdministratorRoleDAO {
      * @return {@link int}
      */
     int updateByPrimaryKey(AdministratorRole record);
-	
-	List<String> listRoles(@Param("administratorId") Integer administratorId);
 }

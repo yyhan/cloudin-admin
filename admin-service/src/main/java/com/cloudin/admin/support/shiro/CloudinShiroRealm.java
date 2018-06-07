@@ -15,7 +15,6 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
@@ -47,6 +46,7 @@ public class CloudinShiroRealm extends AuthorizingRealm {
 		SimplePrincipalCollection principalCollection = (SimplePrincipalCollection) principals;
 		
 		AdministratorVO administrator = principalCollection.oneByType(AdministratorVO.class);
+
 		logger.info("授权：userId={}", administrator.getId());
 		
 		AuthorizationInfo authorizationInfo = principals.oneByType(AuthorizationInfo.class);
@@ -54,15 +54,30 @@ public class CloudinShiroRealm extends AuthorizingRealm {
 			
 			Menu menu = adminAuthorizationService.get(administrator.getId());
 			
-			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			info.setRoles(adminAuthorizationService.listRoles(administrator.getId()));
+			CloudinAuthorizationInfo cAuthorizationInfo = new CloudinAuthorizationInfo();
+			cAuthorizationInfo.setRoles(adminAuthorizationService.listRoles(administrator.getId()));
 			
-			principalCollection.add(info, getName());
+			principalCollection.add(cAuthorizationInfo, getName());
 			principalCollection.add(menu, getName());
 			
-			authorizationInfo = info;
+			return cAuthorizationInfo;
 		} else {
-			// 如果已经有了授权信息，可能会存在授权变更的情况，需要增加授权信息刷新的机制
+			CloudinAuthorizationInfo cAuthorizationInfo = (CloudinAuthorizationInfo) authorizationInfo;
+			if(cAuthorizationInfo.isExpire()) {
+				
+				principalCollection.clear();
+				
+				cAuthorizationInfo = new CloudinAuthorizationInfo();
+				
+				Menu menu = adminAuthorizationService.get(administrator.getId());
+				cAuthorizationInfo.setRoles(adminAuthorizationService.listRoles(administrator.getId()));
+				
+				principalCollection.add(administrator, getName());
+				principalCollection.add(cAuthorizationInfo, getName());
+				principalCollection.add(menu, getName());
+				
+				return cAuthorizationInfo;
+			}
 		}
 		
 		return authorizationInfo;

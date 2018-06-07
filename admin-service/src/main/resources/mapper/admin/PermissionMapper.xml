@@ -272,13 +272,4 @@
       `is_valid` = #{valid,jdbcType=TINYINT}
     where `id` = #{id,jdbcType=INTEGER}
   </update>
-    <select id="listPermission" resultMap="BaseResultMap">
-        SELECT D.`id`, D.`name`, D.`content`, D.`icon`, D.`category`, D.`order`, D.`parent_id`, D.`ext_info`,
-        D.`create_time`, D.`update_time`, D.`is_valid`
-        FROM administrator_role A
-        LEFT JOIN role B ON A.role_id = B.id
-        LEFT JOIN role_permission C ON A.role_id = C.role_id
-        LEFT JOIN permission D ON C.permission_id = D.id
-        WHERE A.administrator_id = #{administratorId}
-    </select>
 </mapper>

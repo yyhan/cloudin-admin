@@ -2,6 +2,7 @@ package com.cloudin.admin.web.controller;
 
 import com.cloudin.admin.entity.Administrator;
 import com.cloudin.admin.service.AdministratorService;
+import com.cloudin.commons.langs.entity.BaseResult;
 import com.cloudin.commons.langs.support.datatables.DTRequest;
 import com.cloudin.commons.langs.support.datatables.DTResponse;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,24 @@ public class AdministratorController {
 	
 	@Resource
 	private AdministratorService administratorService;
+	
+	@ResponseBody
+	@RequestMapping("/ajax/administrator/add.htm")
+	public BaseResult add(Administrator administrator) {
+		return administratorService.add(administrator);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/ajax/administrator/update.htm")
+	public BaseResult update(Administrator administrator) {
+		return administratorService.update(administrator);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/ajax/administrator/delete.htm")
+	public BaseResult delete(Integer administratorId) {
+		return administratorService.delete(administratorId);
+	}
 	
 	@RequestMapping("/administrator/list.htm")
 	public String listWithPage() {

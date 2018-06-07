@@ -121,6 +121,4 @@ public interface PermissionDAO {
      * @return {@link int}
      */
     int updateByPrimaryKey(Permission record);
-    
-    List<Permission> listPermission(@Param("administratorId") Integer administratorId);
 }

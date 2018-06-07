@@ -2,6 +2,7 @@ package com.cloudin.admin.service;
 
 import com.cloudin.admin.bean.Menu;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -13,5 +14,7 @@ public interface AdminAuthorizationService {
 	Menu get(Integer administratorId);
 	
 	Set<String> listRoles(Integer administratorId);
+	
+	Map<String, Set<String>> listPermissionRolesMap();
 	
 }

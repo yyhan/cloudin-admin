@@ -25,8 +25,8 @@
     <header class="main-header">
 
         <a href="/index.htm" class="logo">
-            <span class="logo-mini">好利付</span>
-            <span class="logo-lg">好利付</span>
+            <span class="logo-mini">Cloudin</span>
+            <span class="logo-lg">Cloudin</span>
         </a>
 
         <nav class="navbar navbar-static-top">
@@ -35,6 +35,12 @@
             </a>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
+                    <li>
+                        <a href="javascript:void(0);" id="refreshAuthorizationBtn">
+                            <i class="fa fa-refresh"></i>
+                            <span class="hidden-xs">刷新权限</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="javascript:void(0);">
                             <i class="fa fa-user"></i>
@@ -128,13 +134,15 @@
                     </div>
                 </div>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>
 </body>
 <script src="/static/plugin/jquery-1.12.4.min.js"></script>
 <script src="/static/plugin/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 <script src="/static/adminlte/dist/js/adminlte.min.js"></script>
+<script src="/static/plugin/jquery.form.js"></script>
+<script src="/static/plugin/jquery.blockUI.js"></script>
 <script type="text/javascript">
     $(document).ajaxComplete(function (event, xhr, options) {
         // 重定向处理
@@ -153,6 +161,15 @@
                 }
             }
         }
+    });
+    $("#refreshAuthorizationBtn").on("click", function () {
+        $.blockUI({ message: '正在刷新权限，请稍等...' });
+        $.get("/ajax/common/authorization/refresh.htm", function (res) {
+            if (!res.success) {
+                alert(res.message);
+            }
+            $.unblockUI();
+        }, "json");
     });
 
     $('#logoutConfirmBtn').click(function () {
