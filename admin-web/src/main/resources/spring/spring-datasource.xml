@@ -9,10 +9,10 @@
         <property name="url" value="${jdbc.cloudin.admin.url}" />
         <property name="username" value="${jdbc.cloudin.admin.username}" />
         <property name="password" value="${jdbc.cloudin.admin.password}" />
-        <!--<property name="maxTotal" value="${jdbc.hollypay.maxTotal}" />-->
-        <!--<property name="initialSize" value="${jdbc.hollypay.initialSize}" />-->
-        <!--<property name="maxWaitMillis" value="${jdbc.hollypay.maxWaitMillis}" />-->
-        <!--<property name="maxIdle" value="${jdbc.hollypay.maxIdle}" />-->
-        <!--<property name="minIdle" value="${jdbc.hollypay.minIdle}" />-->
+        <property name="maxTotal" value="${jdbc.cloudin.admin.maxTotal}" />
+        <property name="initialSize" value="${jdbc.cloudin.admin.initialSize}" />
+        <property name="maxWaitMillis" value="${jdbc.cloudin.admin.maxWaitMillis}" />
+        <property name="maxIdle" value="${jdbc.cloudin.admin.maxIdle}" />
+        <property name="minIdle" value="${jdbc.cloudin.admin.minIdle}" />
     </bean>
 </beans>
