@@ -18,7 +18,7 @@
         SELECT B.`code`
         FROM administrator_role A
         LEFT JOIN role B ON A.role_id = B.id
-        WHERE A.administrator_id = #{administratorId}
+        WHERE A.administrator_id = #{administratorId} AND A.is_valid = 1 AND  B.is_valid = 1
     </select>
     <select id="listPermission" resultMap="BaseResultMap">
         SELECT D.`id`, D.`name`, D.`content`, D.`icon`, D.`category`, D.`order`, D.`parent_id`, D.`ext_info`,
