@@ -5,6 +5,8 @@ import com.cloudin.commons.langs.entity.BaseResult;
 import com.cloudin.commons.langs.support.datatables.DTRequest;
 import com.cloudin.commons.langs.support.datatables.DTResponse;
 
+import java.util.List;
+
 /**
  * @author 小天
  * @version 1.0.0, 2018/6/6 0006 17:46
@@ -27,5 +29,7 @@ public interface RoleService {
 	Role get(Integer roleId);
 	
 	DTResponse<Role> listWithPage(DTRequest request);
+	
+	List<Role> listAll();
 	
 }

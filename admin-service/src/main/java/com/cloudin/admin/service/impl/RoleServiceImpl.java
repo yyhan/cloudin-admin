@@ -107,4 +107,9 @@ public class RoleServiceImpl implements RoleService {
 		
 		return new DTResponse<>(list, request.getDraw(), count);
 	}
+	
+	@Override
+	public List<Role> listAll() {
+		return roleDAO.selectByExample(new RoleExample());
+	}
 }

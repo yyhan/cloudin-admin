@@ -122,4 +122,6 @@ public interface AdministratorRoleDAO {
      * @return {@link int}
      */
     int updateByPrimaryKey(AdministratorRole record);
+    
+    int batchInsertSelective(@Param("administratorId") Integer administratorId, @Param("roleIdList") List<Integer> roleIdList);
 }

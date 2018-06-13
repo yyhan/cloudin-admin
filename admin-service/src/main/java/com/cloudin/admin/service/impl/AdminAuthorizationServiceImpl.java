@@ -2,10 +2,19 @@ package com.cloudin.admin.service.impl;
 
 import com.cloudin.admin.bean.Menu;
 import com.cloudin.admin.bean.MenuItem;
+import com.cloudin.admin.dao.AdministratorRoleDAO;
 import com.cloudin.admin.dao.AuthDao;
+import com.cloudin.admin.dao.RoleDAO;
+import com.cloudin.admin.entity.AdministratorRole;
+import com.cloudin.admin.entity.AdministratorRoleExample;
 import com.cloudin.admin.entity.Permission;
+import com.cloudin.admin.entity.Role;
+import com.cloudin.admin.entity.RoleExample;
 import com.cloudin.admin.service.AdminAuthorizationService;
+import com.cloudin.commons.langs.entity.BaseResult;
+import com.sun.jersey.core.util.StringIgnoreCaseKeyComparator;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +36,12 @@ public class AdminAuthorizationServiceImpl implements AdminAuthorizationService 
 	
 	@Resource
 	private AuthDao authDao;
+	
+	@Resource
+	private RoleDAO roleDAO;
+	
+	@Resource
+	private AdministratorRoleDAO administratorRoleDAO;
 	
 	@Override
 	public Menu get(Integer administratorId) {
@@ -69,9 +84,18 @@ public class AdminAuthorizationServiceImpl implements AdminAuthorizationService 
 	}
 	
 	@Override
-	public Set<String> listRoles(Integer administratorId) {
-		List<String> roles = authDao.listRoles(administratorId);
-		return new LinkedHashSet<>(roles);
+	public List<Role> listRoles(Integer administratorId) {
+		return authDao.listRoles(administratorId);
+	}
+	
+	@Override
+	public Set<String> listRoleSet(Integer administratorId) {
+		List<Role> roles = listRoles(administratorId);
+		Set<String> roleCodeSet = new LinkedHashSet<>();
+		for (Role role : roles) {
+			roleCodeSet.add(role.getCode());
+		}
+		return roleCodeSet;
 	}
 	
 	@Override
@@ -93,5 +117,16 @@ public class AdminAuthorizationServiceImpl implements AdminAuthorizationService 
 			
 		}
 		return map;
+	}
+	
+	@Override
+	public BaseResult saveAdminRoles(Integer administratorId, List<Integer> roleIdList) {
+		AdministratorRoleExample example = new AdministratorRoleExample();
+		example.createCriteria().andAdministratorIdEqualTo(administratorId).andValidEqualTo(true);
+		administratorRoleDAO.deleteByExample(example);
+		if(CollectionUtils.isNotEmpty(roleIdList)) {
+			administratorRoleDAO.batchInsertSelective(administratorId, roleIdList);
+		}
+		return BaseResult.build().success();
 	}
 }

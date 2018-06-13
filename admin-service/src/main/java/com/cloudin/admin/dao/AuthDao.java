@@ -1,6 +1,7 @@
 package com.cloudin.admin.dao;
 
 import com.cloudin.admin.entity.Permission;
+import com.cloudin.admin.entity.Role;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Map;
  */
 public interface AuthDao {
 	
-	List<String> listRoles(@Param("administratorId") Integer administratorId);
+	List<Role> listRoles(@Param("administratorId") Integer administratorId);
 	
 	List<Permission> listPermission(@Param("administratorId") Integer administratorId);
 	

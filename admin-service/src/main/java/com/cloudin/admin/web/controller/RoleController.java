@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author 小天
@@ -51,5 +52,12 @@ public class RoleController {
 	@RequestMapping("/ajax/role/list.htm")
 	public DTResponse<Role> listWithPage(DTRequest request) {
 		return roleService.listWithPage(request);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/ajax/role/listAll.htm")
+	public BaseResult<List<Role>> listAll() {
+		List<Role> roleList = roleService.listAll();
+		return BaseResult.build(roleList).success();
 	}
 }

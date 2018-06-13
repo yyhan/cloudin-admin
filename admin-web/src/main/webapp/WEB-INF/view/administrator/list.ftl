@@ -9,6 +9,8 @@
     <#assign pageHead in layout>
     <link rel="stylesheet" href="/static/plugin/datatables-1.10.15/css/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="/static/plugin/bootstrap-daterangepicker/daterangepicker.css"/>
+    <link rel="stylesheet" href="/static/plugin/select2-4.0.6-rc.1/css/select2.min.css"/>
+    <link rel="stylesheet" href="/static/plugin/select2-4.0.6-rc.1/themes/select2-bootstrap.min.css"/>
     </#assign>
 
 <#-- 定义pageBody变量 -->
@@ -122,18 +124,57 @@
                 </div>
             </div>
         </div>
+            <div class="modal fade" id="rModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">管理员角色配置</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="rId" class="col-sm-3 control-label">Id</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="rId" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rName" class="col-sm-3 control-label">姓名</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="rName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rolesSelector" class="col-sm-3 control-label">角色</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="rolesSelector"></select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="rSubmitBtn">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </#assign>
 
 <#-- 定义pageScript变量 -->
     <#assign pageScript in layout>
     <script src="/static/plugin/datatables-1.10.15/js/jquery.dataTables.min.js"></script>
     <script src="/static/plugin/datatables-1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script src="/static/plugin/select2-4.0.6-rc.1/js/select2.full.min.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function () {
-            var dtTableContainer = jQuery("#dtTableContainer");
+            var dtTableContainer = $("#dtTableContainer");
             var administratorModal = $("#administratorModal");
             var administratorModalTitle = administratorModal.find(".modal-title");
-            var dtTableDom = jQuery("#dtTable");
+            var rolesModal = $("#rModal");
+            var dtTableDom = $("#dtTable");
             var dtTable = dtTableDom.DataTable({
                 serverSide: true, // 开启服务端处理
                 stateSave: false, // 关闭状态保存
@@ -179,7 +220,8 @@
                     {
                         title: "操作", render: function (data, type, row, meta) {
                             return '<button class="btn btn-info js-btn-update" data-rowid="' + meta.row + '">修改</button>' +
-                                   '<button class="btn btn-warning js-btn-delete" data-rowid="' + meta.row + '">删除</button>';
+                                   '<button class="btn btn-warning js-btn-delete" data-rowid="' + meta.row + '">删除</button>' +
+                                   '<button class="btn btn-link js-btn-show-roles" data-rowid="' + meta.row + '">查看角色</button>';
                         }
                     }
                 ],
@@ -293,8 +335,85 @@
                     }, 'json')
                 }
             });
-            // 如果配置了 deferLoading，这里需要根据需要手动加载一次数据。
+            dtTableDom.on("click", ".js-btn-show-roles", function () {
+                var rowId = $(this).data("rowid");
+                var administrator = dtTable.row(rowId).data();
+                $("#rId").val(administrator.id);
+                $("#rName").val(administrator.name);
+                rolesModal.data("administrator", administrator);
+                rolesModal.modal("show");
+            });
+            var roleList = [];
+            $.get("/ajax/role/listAll.htm", function(res) {
+                if(res.success) {
+                    roleList = res.data;
+                    for(var i = 0; i < roleList.length; i++) {
+                        var item = roleList[i];
+                        item.text = item.name;
+                    }
+                    $('#rolesSelector').select2({
+                        theme: 'bootstrap',
+                        multiple: true,
+                        allowClear: true,
+                        language: "zh-CN",
+                        placeholder: "请选择角色",
+                        width: '100%',
+                        tags: true,
+                        data: roleList
+                    }, "json");
+                } else {
+                    $('#rolesSelector').select2({
+                        theme: 'bootstrap',
+                        multiple: true,
+                        allowClear: true,
+                        language: "zh-CN",
+                        placeholder: "请选择角色",
+                        width: '100%',
+                        disabled: true
+                    });
+                }
+            }, "json");
+
+            rolesModal.on("shown.bs.modal", function() {
+                rolesModal.block({message: "加载中..."});
+                var administrator = rolesModal.data("administrator");
+                $.get("/ajax/administrator/listRoles.htm", {id: administrator.id}, function(res) {
+                    if(res.success) {
+                        var selectedRoles = res.data;
+                        var selectedRoleIds = [];
+
+                        for(var i = 0; i < selectedRoles.length; i++) {
+                            selectedRoleIds.push(selectedRoles[i].id);
+                        }
+                        $('#rolesSelector').val(selectedRoleIds).trigger("change");
+                    }
+                    rolesModal.unblock();
+                }, "json");
+            });
+            rolesModal.on("hidden.bs.modal", function() {
+                $('#rolesSelector').val(null).trigger("change");
+            });
+            // 如果配置了 deferLoading，这里需要手动加载一次数据。
             dtTable.draw();
+
+            $("#rSubmitBtn").on("click", function () {
+                var administrator = rolesModal.data("administrator");
+                var selectedRoleIds = $('#rolesSelector').val();
+                var selectedRoleIdStr = "";
+                for(var i = 0; i < selectedRoleIds.length; i++) {
+                    selectedRoleIdStr += selectedRoleIds[i] + ",";
+                }
+                $.post("/ajax/administrator/saveRoles.htm", {
+                    administratorId: administrator.id,
+                    selectedRoleIdStr: selectedRoleIdStr
+                }, function(res) {
+                    if(res.success) {
+                        alert("保存角色成功");
+                    } else {
+                        alert(res.message);
+                    }
+                }, "json");
+            });
         });
     </script>
     </#assign>

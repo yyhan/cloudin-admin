@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cloudin.admin.dao.AuthDao">
+    <resultMap id="RoleResultMap" type="com.cloudin.admin.entity.Role">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="is_valid" jdbcType="TINYINT" property="valid" />
+    </resultMap>
     <resultMap id="BaseResultMap" type="com.cloudin.admin.entity.Permission">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="name" jdbcType="VARCHAR" property="name" />
@@ -14,8 +22,8 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="is_valid" jdbcType="TINYINT" property="valid" />
     </resultMap>
-    <select id="listRoles" resultType="java.lang.String">
-        SELECT B.`code`
+    <select id="listRoles" resultMap="RoleResultMap">
+        SELECT B.`id`, B.`code`, B.`name`, B.`create_time`, B.`update_time`, B.`is_valid`
         FROM administrator_role A
         LEFT JOIN role B ON A.role_id = B.id
         WHERE A.administrator_id = #{administratorId} AND A.is_valid = 1 AND  B.is_valid = 1

@@ -2,6 +2,7 @@ package com.cloudin.admin.support.shiro;
 
 import com.cloudin.admin.bean.Menu;
 import com.cloudin.admin.entity.Administrator;
+import com.cloudin.admin.entity.Role;
 import com.cloudin.admin.entity.vo.AdministratorVO;
 import com.cloudin.admin.service.AdminAuthorizationService;
 import com.cloudin.admin.service.AdministratorService;
@@ -55,7 +56,8 @@ public class CloudinShiroRealm extends AuthorizingRealm {
 			Menu menu = adminAuthorizationService.get(administrator.getId());
 			
 			CloudinAuthorizationInfo cAuthorizationInfo = new CloudinAuthorizationInfo();
-			cAuthorizationInfo.setRoles(adminAuthorizationService.listRoles(administrator.getId()));
+			
+			cAuthorizationInfo.setRoles(adminAuthorizationService.listRoleSet(administrator.getId()));
 			
 			principalCollection.add(cAuthorizationInfo, getName());
 			principalCollection.add(menu, getName());
@@ -70,7 +72,7 @@ public class CloudinShiroRealm extends AuthorizingRealm {
 				cAuthorizationInfo = new CloudinAuthorizationInfo();
 				
 				Menu menu = adminAuthorizationService.get(administrator.getId());
-				cAuthorizationInfo.setRoles(adminAuthorizationService.listRoles(administrator.getId()));
+				cAuthorizationInfo.setRoles(adminAuthorizationService.listRoleSet(administrator.getId()));
 				
 				principalCollection.add(administrator, getName());
 				principalCollection.add(cAuthorizationInfo, getName());

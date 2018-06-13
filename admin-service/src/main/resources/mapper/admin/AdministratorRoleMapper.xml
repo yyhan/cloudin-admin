@@ -194,4 +194,11 @@
       `is_valid` = #{valid,jdbcType=TINYINT}
     where `id` = #{id,jdbcType=INTEGER}
   </update>
+    <insert id="batchInsertSelective">
+    insert into `administrator_role` (`administrator_id`, `role_id`, `is_valid`)
+    values
+        <foreach collection ="roleIdList" item="roleId" separator =",">
+            (#{administratorId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, 1)
+        </foreach >
+    </insert>
 </mapper>
