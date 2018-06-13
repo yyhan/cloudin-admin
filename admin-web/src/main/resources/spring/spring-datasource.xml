@@ -15,4 +15,16 @@
         <property name="maxIdle" value="${jdbc.cloudin.admin.maxIdle}" />
         <property name="minIdle" value="${jdbc.cloudin.admin.minIdle}" />
     </bean>
+    
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+    </bean>
+    
+    <bean class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig" />
+        <constructor-arg name="host" value="${jedis.default.host}" />
+        <constructor-arg name="port" value="${jedis.default.port}" type="int" />
+        <constructor-arg name="timeout" value="${jedis.default.timeout}" type="int" />
+        <constructor-arg name="database" value="${jedis.default.database}" type="int"/>
+        <constructor-arg name="password" value="${jedis.default.password}"/>
+    </bean>
 </beans>
