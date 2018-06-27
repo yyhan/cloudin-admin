@@ -33,9 +33,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 			logger.info("未认证");
 			return false;
 		} else {
-			PrincipalCollection principals = currentUser.getPrincipals();
-			
-			AdministratorVO administrator = principals.oneByType(AdministratorVO.class);
+			AdministratorVO administrator = (AdministratorVO) currentUser.getPrincipal();
 			
 			logger.info("已认证： administratorId={}", administrator.getId());
 			

@@ -102,8 +102,8 @@ public class CloudinShiroRealm extends AuthorizingRealm {
 			throw new IncorrectCredentialsException("密码错误");
 		}
 		
-		SimplePrincipalCollection principalCollection = new SimplePrincipalCollection();
-		principalCollection.add(convertToVO(administrator), getName());
+		CloudinPrincipalCollection principalCollection = new CloudinPrincipalCollection();
+		principalCollection.setPrimaryPrincipal(convertToVO(administrator), getName());
 		
 		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo();
 		simpleAuthenticationInfo.setPrincipals(principalCollection);
