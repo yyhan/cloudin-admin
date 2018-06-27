@@ -37,7 +37,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 			
 			AdministratorVO administrator = principals.oneByType(AdministratorVO.class);
 			
-			logger.info("已认证： userId={}", administrator.getId());
+			logger.info("已认证： administratorId={}", administrator.getId());
 			
 			request.setAttribute(Keys.REQ_USER, administrator);
 		}
