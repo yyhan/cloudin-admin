@@ -33,17 +33,16 @@
                 <entry key="/signout.htm" value="anon" />
                 <entry key="/ajax/signin.htm" value="anon" />
                 <entry key="/403.htm" value="anon" />
-                <!--<entry key="/index.htm" value="authc" />-->
-                <!--<entry key="/administrator/**.htm" value="authc,cloudinAuth" />-->
-                <!--<entry key="/ajax/administrator/**.htm" value="authc,cloudinAuth" />-->
-                <entry key="/**" value="authc,cloudinAuth" />
+                <entry key="/index.htm" value="cloudinAuth[ONLY_AUTHENTICATION]" />
+                <entry key="/**" value="cloudinAuth" />
             </map>
         </property>
         <property name="filters">
             <map>
                 <entry key="cloudinAuth">
                     <bean class="com.cloudin.admin.support.shiro.CloudinAccessControlFilter">
-                        <property name="defaultAccessAllowed" value="true" />
+                        <property name="unauthorizedUrl" value="/403.htm" />
+                        <property name="enabled" value="true" />
                     </bean>
                 </entry>
             </map>
@@ -51,7 +50,13 @@
         <property name="securityManager">
             <bean class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
                 <property name="realm">
-                    <bean class="com.cloudin.admin.support.shiro.CloudinShiroRealm" />
+                    <bean class="com.cloudin.admin.support.shiro.CloudinShiroRealm">
+                        <property name="name" value="CloudinShiroRealm" />
+                        <property name="cachingEnabled" value="true" />
+                        <property name="cacheManager">
+                            <bean class="com.cloudin.admin.support.shiro.GuavaCacheManager" />
+                        </property>
+                    </bean>
                 </property>
             </bean>
         </property>

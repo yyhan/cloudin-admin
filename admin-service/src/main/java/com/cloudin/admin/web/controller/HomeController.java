@@ -29,6 +29,11 @@ public class HomeController {
     public String index(){
         return "index";
     }
+	
+	@RequestMapping(path = {"/403.htm"})
+	public String forbidden(){
+		return "403";
+	}
 
     @RequestMapping(path = {"/signin.htm"})
     public String signin(){

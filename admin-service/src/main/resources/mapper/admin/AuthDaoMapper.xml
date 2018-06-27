@@ -35,8 +35,12 @@
         LEFT JOIN role B ON A.role_id = B.id
         LEFT JOIN role_permission C ON A.role_id = C.role_id
         LEFT JOIN permission D ON C.permission_id = D.id
-        WHERE A.administrator_id = #{administratorId} AND A.is_valid = 1 AND  B.is_valid = 1 AND  C.is_valid = 1
-        AND  D.is_valid = 1
+        <where>
+            <if test="administratorId != null and administratorId > 0">
+                A.administrator_id = #{administratorId}
+            </if>
+            AND A.is_valid = 1 AND  B.is_valid = 1 AND  C.is_valid = 1 AND  D.is_valid = 1
+        </where>
     </select>
     <select id="listPermissionRoleMap" resultType="java.util.Map">
         SELECT A.id permissionId, A.content, C.id roleId, C.code
@@ -44,6 +48,13 @@
         LEFT JOIN role_permission B ON A.id = B.permission_id
         LEFT JOIN role C ON B.role_id = C.id
         WHERE A.is_valid = 1 AND  B.is_valid = 1 AND  C.is_valid = 1
+    </select>
+    <select id="listAllowedRoleCode" resultType="java.lang.String">
+        SELECT R.`code`
+        FROM permission A
+        JOIN role_permission RP ON A.id = RP.permission_id
+        JOIN role R ON R.id = RP.role_id
+        WHERE A.content = #{content} AND A.is_valid = 1 AND R.is_valid = 1 AND RP.is_valid = 1
     </select>
 </mapper>
 

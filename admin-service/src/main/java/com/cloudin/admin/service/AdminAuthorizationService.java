@@ -14,7 +14,21 @@ import java.util.Set;
  */
 public interface AdminAuthorizationService {
 	
+	/**
+	 * 查询指定管理员的菜单信息
+	 *
+	 * @param administratorId 管理员Id，必须大于 0
+	 *
+	 * @return 菜单
+	 */
 	Menu get(Integer administratorId);
+	
+	/**
+	 * 获取全部菜单
+	 *
+	 * @return 菜单
+	 */
+	Menu getAll();
 	
 	List<Role> listRoles(Integer administratorId);
 	
@@ -30,10 +44,19 @@ public interface AdminAuthorizationService {
 	Map<String, Set<String>> listPermissionRolesMap();
 	
 	/**
+	 * 查询允许访问指定 url 的角色标识集合
+	 *
+	 * @param url 指定 url
+	 *
+	 * @return 角色标识集合
+	 */
+	Set<String> listAllowedRoleCode(String url);
+	
+	/**
 	 * 保存管理员 - 角色信息
 	 *
 	 * @param administratorId 管理员Id
-	 * @param roleIdList 角色Id集合
+	 * @param roleIdList      角色Id集合
 	 *
 	 * @return
 	 */

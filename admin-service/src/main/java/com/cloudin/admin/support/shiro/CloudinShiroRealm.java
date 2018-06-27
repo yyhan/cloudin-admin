@@ -1,8 +1,6 @@
 package com.cloudin.admin.support.shiro;
 
-import com.cloudin.admin.bean.Menu;
 import com.cloudin.admin.entity.Administrator;
-import com.cloudin.admin.entity.Role;
 import com.cloudin.admin.entity.vo.AdministratorVO;
 import com.cloudin.admin.service.AdminAuthorizationService;
 import com.cloudin.admin.service.AdministratorService;
@@ -16,6 +14,8 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
@@ -32,6 +32,8 @@ public class CloudinShiroRealm extends AuthorizingRealm {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
+	private String rootUserName = "root";
+	
 	@Resource
 	private AdministratorService administratorService;
 	
@@ -47,41 +49,18 @@ public class CloudinShiroRealm extends AuthorizingRealm {
 		SimplePrincipalCollection principalCollection = (SimplePrincipalCollection) principals;
 		
 		AdministratorVO administrator = principalCollection.oneByType(AdministratorVO.class);
-
-		logger.info("授权：userId={}", administrator.getId());
 		
-		AuthorizationInfo authorizationInfo = principals.oneByType(AuthorizationInfo.class);
-		if (authorizationInfo == null) {
-			
-			Menu menu = adminAuthorizationService.get(administrator.getId());
-			
-			CloudinAuthorizationInfo cAuthorizationInfo = new CloudinAuthorizationInfo();
-			
-			cAuthorizationInfo.setRoles(adminAuthorizationService.listRoleSet(administrator.getId()));
-			
-			principalCollection.add(cAuthorizationInfo, getName());
-			principalCollection.add(menu, getName());
-			
-			return cAuthorizationInfo;
-		} else {
-			CloudinAuthorizationInfo cAuthorizationInfo = (CloudinAuthorizationInfo) authorizationInfo;
-			if(cAuthorizationInfo.isExpire()) {
-				
-				principalCollection.clear();
-				
-				cAuthorizationInfo = new CloudinAuthorizationInfo();
-				
-				Menu menu = adminAuthorizationService.get(administrator.getId());
-				cAuthorizationInfo.setRoles(adminAuthorizationService.listRoleSet(administrator.getId()));
-				
-				principalCollection.add(administrator, getName());
-				principalCollection.add(cAuthorizationInfo, getName());
-				principalCollection.add(menu, getName());
-				
-				return cAuthorizationInfo;
-			}
+		if(logger.isDebugEnabled()) {
+			logger.debug("授权： administratorId={}", administrator.getId());
 		}
 		
+		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+		
+		authorizationInfo.setRoles(adminAuthorizationService.listRoleSet(administrator.getId()));
+		
+		if (rootUserName.equals(administrator.getAccount())) {
+			authorizationInfo.addRole(AuthConstants.ROLE_SUPER_ADMIN);
+		}
 		return authorizationInfo;
 	}
 	
@@ -106,11 +85,11 @@ public class CloudinShiroRealm extends AuthorizingRealm {
 		
 		Administrator administrator;
 		
-		if(username.indexOf("@") > 0) {
+		if (username.indexOf("@") > 0) {
 			administrator = administratorService.getByEmail(username);
 		} else {
 			administrator = administratorService.getByAccount(username);
-			if(administrator == null) {
+			if (administrator == null) {
 				administrator = administratorService.getByMobile(username);
 			}
 		}
@@ -140,9 +119,17 @@ public class CloudinShiroRealm extends AuthorizingRealm {
 		// 认证时，已经比较过密码，这里忽略掉凭据比较
 	}
 	
+	@Override
+	protected Object getAuthorizationCacheKey(PrincipalCollection principals) {
+		AdministratorVO administrator = principals.oneByType(AdministratorVO.class);
+		// 将管理员Id 作为 缓存 key
+		return administrator.getId();
+	}
+	
 	private AdministratorVO convertToVO(Administrator administrator) {
 		AdministratorVO administratorVO = new AdministratorVO();
 		administratorVO.setId(administrator.getId());
+		administratorVO.setAccount(administrator.getAccount());
 		administratorVO.setName(administrator.getName());
 		administratorVO.setMobile(administrator.getMobile());
 		administratorVO.setEmail(administrator.getEmail());

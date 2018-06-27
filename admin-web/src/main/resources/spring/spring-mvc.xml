@@ -39,7 +39,17 @@
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/**/*.htm" />
+            <mvc:exclude-mapping path="/signin.htm" />
+            <mvc:exclude-mapping path="/ajax/signin.htm" />
+            <mvc:exclude-mapping path="/signout.htm" />
             <bean class="com.cloudin.admin.web.interceptor.AuthInterceptor" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/*.htm" />
+            <mvc:exclude-mapping path="/signin.htm" />
+            <mvc:exclude-mapping path="/signout.htm" />
+            <mvc:exclude-mapping path="/ajax/**/*.htm" />
+            <bean class="com.cloudin.admin.web.interceptor.MenuInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
     

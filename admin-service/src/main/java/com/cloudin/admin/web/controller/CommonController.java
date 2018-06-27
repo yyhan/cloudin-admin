@@ -1,6 +1,5 @@
 package com.cloudin.admin.web.controller;
 
-import com.cloudin.admin.support.shiro.CloudinAuthorizationInfo;
 import com.cloudin.commons.langs.entity.BaseResult;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -24,8 +23,6 @@ public class CommonController {
 	public BaseResult refreshAuthorization() {
 		Subject currentSubject = SecurityUtils.getSubject();
 		PrincipalCollection principalCollection = currentSubject.getPrincipals();
-		CloudinAuthorizationInfo authorizationInfo = principalCollection.oneByType(CloudinAuthorizationInfo.class);
-		authorizationInfo.setExpire(true);
 		return BaseResult.build().success();
 	}
 }

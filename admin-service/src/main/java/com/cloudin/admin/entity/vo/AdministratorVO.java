@@ -14,6 +14,11 @@ public class AdministratorVO {
 	private Integer id;
 	
 	/**
+	 * 登录账号
+	 */
+	private String account;
+	
+	/**
 	 * 名称
 	 */
 	private String name;
@@ -49,6 +54,14 @@ public class AdministratorVO {
 	
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public String getAccount() {
+		return account;
+	}
+	
+	public void setAccount(String account) {
+		this.account = account;
 	}
 	
 	public String getName() {

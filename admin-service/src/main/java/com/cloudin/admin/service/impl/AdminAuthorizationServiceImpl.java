@@ -45,42 +45,17 @@ public class AdminAuthorizationServiceImpl implements AdminAuthorizationService 
 	
 	@Override
 	public Menu get(Integer administratorId) {
+		if(administratorId == null || administratorId <= 0) {
+			return null;
+		}
 		List<Permission> permissionList = authDao.listPermission(administratorId);
-		
-		List<MenuItem> menuItemList = new ArrayList<>(permissionList.size());
-		Map<Integer, MenuItem> menuItemMap = new HashMap<>();
-		for (Permission permission : permissionList) {
-			MenuItem menuItem = new MenuItem();
-			menuItem.setId(permission.getId());
-			menuItem.setName(permission.getName());
-			menuItem.setIcon(permission.getIcon());
-			menuItem.setUrl(permission.getContent());
-			menuItem.setOrder(permission.getOrder());
-			menuItem.setParentId(permission.getParentId());
-			menuItem.setType(permission.getCategory());
-			menuItem.setExtInfo(permission.getExtInfo());
-			menuItemList.add(menuItem);
-			
-			if (menuItem.getParentId() == null || menuItem.getParentId() <= 0) {
-				menuItemMap.put(menuItem.getId(), menuItem);
-			}
-		}
-		
-		for (MenuItem menuItem : menuItemList) {
-			if (menuItem.getParentId() == null || menuItem.getParentId() <= 0) {
-				continue;
-			}
-			MenuItem parentMenu = menuItemMap.get(menuItem.getParentId());
-			if (parentMenu != null) {
-				List<MenuItem> subMenus = parentMenu.getSubMenus();
-				if (subMenus == null) {
-					subMenus = new ArrayList<>();
-					parentMenu.setSubMenus(subMenus);
-				}
-				subMenus.add(menuItem);
-			}
-		}
-		return new Menu(menuItemMap.values());
+		return convertToMenu(permissionList);
+	}
+	
+	@Override
+	public Menu getAll() {
+		List<Permission> permissionList = authDao.listPermission(null);
+		return convertToMenu(permissionList);
 	}
 	
 	@Override
@@ -120,6 +95,12 @@ public class AdminAuthorizationServiceImpl implements AdminAuthorizationService 
 	}
 	
 	@Override
+	public Set<String> listAllowedRoleCode(String url) {
+		List<String> roles = authDao.listAllowedRoleCode(url);
+		return new LinkedHashSet<>(roles);
+	}
+	
+	@Override
 	public BaseResult saveAdminRoles(Integer administratorId, List<Integer> roleIdList) {
 		AdministratorRoleExample example = new AdministratorRoleExample();
 		example.createCriteria().andAdministratorIdEqualTo(administratorId).andValidEqualTo(true);
@@ -128,5 +109,46 @@ public class AdminAuthorizationServiceImpl implements AdminAuthorizationService 
 			administratorRoleDAO.batchInsertSelective(administratorId, roleIdList);
 		}
 		return BaseResult.build().success();
+	}
+	
+	private Menu convertToMenu(List<Permission> permissionList) {
+		List<MenuItem> menuItemList = new ArrayList<>(permissionList.size());
+		Map<Integer, MenuItem> menuItemMap = new HashMap<>();
+		for (Permission permission : permissionList) {
+			if(permission.getCategory() != 1) {
+				continue;
+			}
+			MenuItem menuItem = new MenuItem();
+			menuItem.setId(permission.getId());
+			menuItem.setName(permission.getName());
+			menuItem.setIcon(permission.getIcon());
+			menuItem.setUrl(permission.getContent());
+			menuItem.setOrder(permission.getOrder());
+			menuItem.setParentId(permission.getParentId());
+			menuItem.setType(permission.getCategory());
+			menuItem.setExtInfo(permission.getExtInfo());
+			
+			if (menuItem.getParentId() == null || menuItem.getParentId() <= 0) {
+				menuItemMap.put(menuItem.getId(), menuItem);
+			} else {
+				menuItemList.add(menuItem);
+			}
+		}
+		
+		for (MenuItem menuItem : menuItemList) {
+			if (menuItem.getParentId() == null || menuItem.getParentId() <= 0) {
+				continue;
+			}
+			MenuItem parentMenu = menuItemMap.get(menuItem.getParentId());
+			if (parentMenu != null) {
+				List<MenuItem> subMenus = parentMenu.getSubMenus();
+				if (subMenus == null) {
+					subMenus = new ArrayList<>();
+					parentMenu.setSubMenus(subMenus);
+				}
+				subMenus.add(menuItem);
+			}
+		}
+		return new Menu(menuItemMap.values());
 	}
 }
