@@ -16,12 +16,7 @@
     <#assign pageBody in layout>
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="alert alert-info">欢迎来到这里</div>
-                    </div>
-                </div>
-
+                <div class="alert alert-info">欢迎来到这里</div>
             </div>
         </div>
     </#assign>
