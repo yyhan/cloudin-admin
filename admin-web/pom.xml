@@ -18,7 +18,7 @@
 
     <profiles>
         <profile>
-            <id>poi-api-develop</id>
+            <id>develop</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -35,7 +35,7 @@
             </build>
         </profile>
         <profile>
-            <id>poi-api-product</id>
+            <id>product</id>
             <build>
                 <resources>
                     <resource>
