@@ -1,4 +1,4 @@
-package com.cloudin.admin.web.controller;
+package com.cloudin.admin.web.controller.auth;
 
 import com.cloudin.admin.entity.Permission;
 import com.cloudin.admin.service.PermissionService;
