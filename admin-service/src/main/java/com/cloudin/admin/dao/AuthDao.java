@@ -15,9 +15,11 @@ import java.util.Set;
 public interface AuthDao {
 	
 	List<Role> listRoles(@Param("administratorId") Integer administratorId);
-	
+
 	List<Permission> listPermission(@Param("administratorId") Integer administratorId);
-	
+
+	List<Permission> listAllPermission();
+
 	List<Map<String, Object>> listPermissionRoleMap();
 	
 	/**

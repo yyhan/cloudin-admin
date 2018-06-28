@@ -9,7 +9,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="is_valid" jdbcType="TINYINT" property="valid" />
     </resultMap>
-    <resultMap id="BaseResultMap" type="com.cloudin.admin.entity.Permission">
+    <resultMap id="PermissionResultMap" type="com.cloudin.admin.entity.Permission">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="content" jdbcType="VARCHAR" property="content" />
@@ -28,7 +28,7 @@
         LEFT JOIN role B ON A.role_id = B.id
         WHERE A.administrator_id = #{administratorId} AND A.is_valid = 1 AND  B.is_valid = 1
     </select>
-    <select id="listPermission" resultMap="BaseResultMap">
+    <select id="listPermission" resultMap="PermissionResultMap">
         SELECT D.`id`, D.`name`, D.`content`, D.`icon`, D.`category`, D.`order`, D.`parent_id`, D.`ext_info`,
         D.`create_time`, D.`update_time`, D.`is_valid`
         FROM administrator_role A
@@ -41,6 +41,11 @@
             </if>
             AND A.is_valid = 1 AND  B.is_valid = 1 AND  C.is_valid = 1 AND  D.is_valid = 1
         </where>
+    </select>
+    <select id="listAllPermission" resultMap="PermissionResultMap">
+        SELECT id, name, content, icon, category, `order`, parent_id, ext_info, create_time, update_time, is_valid
+	    FROM permission
+	    where is_valid = 1
     </select>
     <select id="listPermissionRoleMap" resultType="java.util.Map">
         SELECT A.id permissionId, A.content, C.id roleId, C.code

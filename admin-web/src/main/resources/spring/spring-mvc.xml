@@ -35,6 +35,7 @@
             <bean class="com.cloudin.commons.langs.support.spring.BasicInterceptor">
                 <property name="enableRemoteFeatureCheck" value="true" />
                 <property name="featureCodeHashSalt" value="^*cbvG?+zffhBQ06y5~zu^%U^uIIwT" />
+                <property name="accessControlAllowOrigins" value="${server.cors.allow.origins}" />
             </bean>
         </mvc:interceptor>
         <mvc:interceptor>

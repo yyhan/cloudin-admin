@@ -54,7 +54,7 @@ public class AdminAuthorizationServiceImpl implements AdminAuthorizationService 
 	
 	@Override
 	public Menu getAll() {
-		List<Permission> permissionList = authDao.listPermission(null);
+		List<Permission> permissionList = authDao.listAllPermission();
 		return convertToMenu(permissionList);
 	}
 	
