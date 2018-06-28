@@ -95,7 +95,7 @@
         <section class="content-header">
             <div>
                 <ol class="breadcrumb" style="margin-bottom: 0px;">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> admin</a></li>
+                    <li><a href="/index.htm"><i class="fa fa-dashboard"></i> <span> 首页</span></a></li>
                     <li class="active">${title!"admin"}</li>
                 </ol>
             </div>
