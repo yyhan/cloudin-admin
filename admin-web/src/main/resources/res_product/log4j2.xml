@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <!-- 自定义属性 -->
+        <Property name="log.dir">/home/www/log/cloudin-admin</Property>
+        <!-- 设置日志文件编码 -->
+        <Property name="log.charset">UTF-8</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="mainFileLog" fileName="${log.dir}/main.log" filePattern="${log.dir}/main-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger - %msg %ex %n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- 默认日志级别 -->
+        <Root level="info">
+            <AppenderRef ref="mainFileLog"/>
+        </Root>
+
+        <!-- 基本日志 -->
+        <logger name="com.cloudin.admin" level="info" />
+        <!-- 打印 spring info 日志 -->
+        <logger name="org.springframework" level="info" />
+    </Loggers>
+</Configuration>
