@@ -12,6 +12,56 @@
     <artifactId>admin-web</artifactId>
     <packaging>war</packaging>
 
+    <build>
+        <finalName>cloudin-admin</finalName>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>poi-api-develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <!-- 资源根目录排除各环境的配置，使用单独的资源目录来指定 -->
+                        <excludes>
+                            <exclude>res_product/</exclude>
+                        </excludes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>poi-api-product</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <!-- 资源根目录排除各环境的配置，使用单独的资源目录来指定 -->
+                        <excludes>
+                            <exclude>res_product/</exclude>
+                        </excludes>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources/res_product</directory>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <!-- 线上环境修改 war 包输出路径 -->
+                            <outputDirectory>${pom.parent.basedir}/target</outputDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
