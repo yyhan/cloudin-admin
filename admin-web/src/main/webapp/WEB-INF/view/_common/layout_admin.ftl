@@ -173,13 +173,7 @@
     });
 
     $('#logoutConfirmBtn').click(function () {
-        $.get("/ajax/signout.htm", function (res) {
-            if (res.success) {
-                window.location.href = "/signin.htm";
-            } else {
-                alert(res.message);
-            }
-        }, "json");
+        window.location.href = "/signout.htm";
     });
     $currMenuItem = $('.sidebar-menu').find("a[href='" + location.pathname + "']");
     if ($currMenuItem.parent().parent().hasClass("treeview-menu")) {

@@ -28,7 +28,7 @@
             <div class="col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <P>你要注销么</P>
+                        <P>您已经退出系统，<a href="/signin.htm">重新登录</a></P>
                     </div>
                 </div>
             </div>
